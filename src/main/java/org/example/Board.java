@@ -20,13 +20,24 @@ public class Board {
     }
 
     public void drawBoard(){
-        String xLine = "    ";
+        String xLine = "     ";
         for (int x = 0; x < width; x++){
-            xLine += x + "   ";
+            if (x < 9) {
+                xLine += x + "   ";
+            }
+            else{
+                xLine += x + "  ";
+            }
         }
         System.out.println(xLine);
         for (int y = 0; y < height; y++) {
-            String curLine = y + " | ";
+            String curLine;
+            if (y < 10) {
+                curLine = " " + y + " | ";
+            }
+            else{
+                curLine = y + " | ";
+            }
             for (int x = 0; x < width; x++) {
                 if (tiles[x][y].getIsHidden()){
                     curLine += "H | ";
@@ -66,9 +77,28 @@ public class Board {
             tiles[x][y].reveal();
             return -1;
         }
+        else if (tiles[x][y].getAdjMines() == 0){
+            tiles[x][y].reveal();
+            chainRevealTiles(x, y);
+            return tiles[x][y].getAdjMines();
+        }
         else{
             tiles[x][y].reveal();
             return tiles[x][y].getAdjMines();
+        }
+    }
+
+    private void chainRevealTiles(int x, int y){
+        int[] safe = getSafeTiles(x, y);
+        for (int a = safe[0]; a <= safe[1]; a++) {
+            for (int b = safe[2]; b <= safe[3]; b++) {
+                if (tiles[a][b].getIsHidden()) {
+                    tiles[a][b].reveal();
+                    if (tiles[a][b].getAdjMines() == 0) {
+                        chainRevealTiles(a, b);
+                    }
+                }
+            }
         }
     }
 
@@ -90,6 +120,15 @@ public class Board {
     }
 
     private void incrementAdjTiles(int x, int y){
+        int[] safe = getSafeTiles(x, y);
+        for (int a = safe[0]; a <= safe[1]; a++) {
+            for (int b = safe[2]; b <= safe[3]; b++) {
+                tiles[a][b].incrementAdjMines();
+            }
+        }
+    }
+
+    private int[] getSafeTiles(int x, int y){
         int amin = x - 1;
         int amax = x + 1;
         int bmin = y - 1;
@@ -106,11 +145,7 @@ public class Board {
         else if (y == height - 1){
             bmax = y;
         }
-        for (int a = amin; a <= amax; a++) {
-            for (int b = bmin; b <= bmax; b++) {
-                tiles[a][b].incrementAdjMines();
-            }
-        }
+        return new int[]{amin, amax, bmin, bmax};
     }
 
     private void initMines(){

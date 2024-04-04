@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args){
 
-        Board board = new Board(10,8, 10);
+        Board board = new Board(15,12, 10);
         board.drawBoard();
         while (!gameOver) {
             //get player move
