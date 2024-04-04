@@ -8,10 +8,14 @@ public class Board {
     private int[][] mineLoc;
     private Tile[][] tiles;
 
+    private final int revealsToWin;
+    private int curReveals = 0;
+
     public Board(int width, int height, int mineCount){
         this.width = width;
         this.height = height;
         this.mineCount = mineCount;
+        revealsToWin = width * height - mineCount;
 
         tiles = new Tile[width][height];
         mineLoc = new int[2][mineCount];
@@ -39,7 +43,10 @@ public class Board {
                 curLine = y + " | ";
             }
             for (int x = 0; x < width; x++) {
-                if (tiles[x][y].getIsHidden()){
+                if (tiles[x][y].getIsFlagged()){
+                    curLine += "P | ";
+                }
+                else if (tiles[x][y].getIsHidden()){
                     curLine += "H | ";
                 }
                 else if (tiles[x][y].getHasMine()){
@@ -80,12 +87,19 @@ public class Board {
         else if (tiles[x][y].getAdjMines() == 0){
             tiles[x][y].reveal();
             chainRevealTiles(x, y);
+            curReveals++;
+
             return tiles[x][y].getAdjMines();
         }
         else{
             tiles[x][y].reveal();
+            curReveals++;
             return tiles[x][y].getAdjMines();
         }
+    }
+
+    public boolean checkWin(){
+        return curReveals == revealsToWin;
     }
 
     private void chainRevealTiles(int x, int y){
@@ -94,12 +108,21 @@ public class Board {
             for (int b = safe[2]; b <= safe[3]; b++) {
                 if (tiles[a][b].getIsHidden()) {
                     tiles[a][b].reveal();
+                    curReveals++;
                     if (tiles[a][b].getAdjMines() == 0) {
                         chainRevealTiles(a, b);
                     }
                 }
             }
         }
+    }
+
+    public boolean flagTile(int x, int y){
+        if (tiles[x][y].getIsHidden()){
+            tiles[x][y].toggleIsFlagged();
+            return true;
+        }
+        return false;
     }
 
     private void initBoard(){

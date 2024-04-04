@@ -40,4 +40,8 @@ public class Tile {
     public boolean getIsFlagged(){
         return isFlagged;
     }
+
+    public void toggleIsFlagged(){
+        isFlagged = !isFlagged;
+    }
 }
