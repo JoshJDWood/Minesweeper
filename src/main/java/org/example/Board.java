@@ -1,11 +1,11 @@
 package org.example;
 
 public class Board {
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
-    private int mineCount;
-    private int[][] mineLoc;
+    private final int mineCount;
+    private final int[][] mineLoc;
     private Tile[][] tiles;
 
     private final int revealsToWin;
@@ -130,7 +130,7 @@ public class Board {
 
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
-                tiles[x][y] = new Tile(x, y);
+                tiles[x][y] = new Tile();
             }
         }
 
