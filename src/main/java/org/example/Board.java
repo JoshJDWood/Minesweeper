@@ -125,6 +125,14 @@ public class Board {
         return false;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     private void initBoard(){
         initMines();
 

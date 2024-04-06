@@ -2,6 +2,8 @@ package org.example;
 
 import java.util.Scanner;
 
+import static org.example.InputValidation.checkValidInt;
+
 public class Main {
     public static Scanner reader = new Scanner(System.in);
     private static boolean quit = false;
@@ -15,8 +17,7 @@ public class Main {
             System.out.println("2. Medium (18 x 14, 40 mines)");
             System.out.println("3. Hard (24 x 20, 100 mines)");
             System.out.println("4. Quit");
-            String input = reader.next();
-            int level = Integer.parseInt(input);
+            int level = checkValidInt(1,4);
 
             if (level == 4){
                 quit = true;
@@ -25,6 +26,5 @@ public class Main {
                 LevelManager.runLevel(level);
             }
         }
-
     }
 }

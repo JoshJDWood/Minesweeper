@@ -1,5 +1,6 @@
 package org.example;
 
+import static org.example.InputValidation.checkValidInt;
 import static org.example.Main.reader;
 
 public class LevelManager {
@@ -28,16 +29,14 @@ public class LevelManager {
         while (!gameOver) {
             //get player move
             System.out.println("Target x: ");
-            String input = reader.next();
-            int x = Integer.parseInt(input);
+            int x = checkValidInt(0, board.getWidth() - 1);
             System.out.println("Target y: ");
-            input = reader.next();
-            int y = Integer.parseInt(input);
+            int y = checkValidInt(0, board.getHeight() - 1);
             System.out.println("1. To Dig");
             System.out.println("2. To Flag / Remove Flag: ");
-            input = reader.next();
-            boolean dig = Integer.parseInt(input) == 1;
-            boolean flag = Integer.parseInt(input) == 2;
+            int action = checkValidInt(1,2);
+            boolean dig = action == 1;
+            boolean flag = action == 2;
 
             if (dig) {
                 int guessResult = board.revealTile(x, y);
