@@ -65,14 +65,6 @@ public class Board {
         System.out.println(xLine);
     }
 
-//    public enum TileState{
-//        mined(-1), flagged(-2), revealed(-3)
-//
-//        private final int state;
-//        TileState(int state){this.state = state;}
-//        public getState(){return state;}
-//    }
-
     public int revealTile(int x, int y){
         if (!tiles[x][y].getIsHidden()){
             return -3;
